@@ -1,0 +1,629 @@
+/* Inspector cards, field grids, reference links, ID lookup, dialogs, stats, the ID picker and Appearance. */
+
+/* ------------------------------- inspector ------------------------------- */
+
+.inspector {
+  padding: 10px 12px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+/* The name of what's selected: the one serif in the panel. */
+.inspector h2 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 19px;
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0;
+}
+/* Every inspector's head: kind, state and id; then the name with the actions for it. */
+.inspector-head {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex: none;
+  flex-wrap: wrap;
+}
+.toolbar > button:not(.primary) {
+  background: transparent;
+  border-color: var(--line-strong);
+}
+.toolbar > button:not(.primary):hover:not(:disabled) {
+  background: var(--hover);
+}
+/* A problem with the row, on one line with what fixes it. */
+.notice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+/*
+ * A part of an inspector (Fields, Preview, Parts…): a header strip across the
+ * panel and its content below, no box around it.
+ */
+.section {
+  border-top: 1px solid var(--line);
+}
+/* Inside an inspector its strips run edge to edge. */
+.inspector > .section {
+  margin: 0 -12px;
+}
+/* Elsewhere (the start screen, dialogs) it's a framed group. */
+.section:not(.inspector > .section) {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+.section > header {
+  padding: 4px 12px;
+  background: var(--panel-2);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 30px;
+}
+.section > header h3 {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text);
+  font-weight: 600;
+  letter-spacing: 0;
+}
+.section > .content {
+  padding: 8px 12px;
+}
+
+.fields {
+  display: grid;
+  gap: 5px 12px;
+  align-items: start;
+}
+/* A heading in the field list: a group of related fields (Smithbox's layout), folded with a click. */
+.fields > .field-group {
+  grid-column: 1 / -1;
+  justify-content: flex-start;
+  gap: 2px;
+  margin-top: 10px;
+  padding: 0 0 3px;
+  min-height: 0;
+  border: none;
+  border-bottom: 1px solid var(--line);
+  border-radius: 0;
+  background: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+  text-align: left;
+}
+.fields > .field-group.first {
+  margin-top: 0;
+}
+.fields > .field-group:hover:not(:disabled) {
+  background: none;
+  border-color: var(--line-strong);
+}
+.fields > .field-group .twisty {
+  width: 14px;
+  text-align: left;
+}
+.fields > .field-group .count {
+  margin-left: 6px;
+  font-weight: 400;
+  color: var(--text-faint);
+}
+.field-label {
+  color: var(--text-dim);
+  overflow-wrap: anywhere;
+  line-height: 1.3;
+  padding-top: 5px;
+}
+.field-label.refs {
+  color: var(--text);
+}
+.field-value {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.field-value .field-input {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  min-height: var(--control-h);
+}
+.field-value .field-input input:not([type='checkbox']) {
+  width: 100%;
+}
+/* Reference names get their own line so the full name always shows. */
+.field-refs {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 0 2px 2px;
+}
+.ref-link {
+  font: inherit;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--shared);
+  cursor: pointer;
+  background: none;
+  border: none;
+  box-shadow: none;
+  min-height: 0;
+  padding: 0;
+  text-align: left;
+  overflow-wrap: anywhere;
+  line-height: 1.35;
+  display: inline;
+  white-space: normal;
+  text-decoration: underline transparent;
+  text-underline-offset: 2px;
+  transition:
+    color var(--fast) var(--ease),
+    text-decoration-color var(--fast) var(--ease);
+}
+.ref-link:hover:not(:disabled) {
+  text-decoration-color: currentColor;
+  color: color-mix(in srgb, var(--shared) 80%, #fff);
+  background: none;
+  border: none;
+}
+.ref-link:active:not(:disabled) {
+  transform: none;
+}
+.ref-link .faint {
+  font-size: 11px;
+}
+
+/* What a value means (an event flag, a text id...): opens "What is this ID?". */
+.about-link {
+  font: inherit;
+  font-size: 12px;
+  color: var(--text-dim);
+  cursor: pointer;
+  background: none;
+  border: none;
+  box-shadow: none;
+  min-height: 0;
+  padding: 0 2px 2px;
+  text-align: left;
+  overflow-wrap: anywhere;
+  white-space: normal;
+  display: flex;
+  justify-content: flex-start;
+  width: 100%;
+  gap: 6px;
+  align-items: baseline;
+}
+.about-link:hover:not(:disabled) {
+  color: var(--text);
+  background: none;
+  border: none;
+  text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, currentColor 40%, transparent);
+}
+.about-link:active:not(:disabled) {
+  transform: none;
+}
+.about-link .about-mark {
+  flex: none;
+  color: var(--gold);
+  font-weight: 700;
+}
+.about-link.text .about-mark {
+  color: var(--shared);
+}
+
+/* "What is this ID?" */
+.modal.id-lookup {
+  width: min(760px, 94vw);
+}
+.id-lookup .body {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.lookup-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
+}
+.lookup-section h3 {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+.lookup-section h4 {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.lookup-summary {
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--text);
+}
+.lookup-list {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+/* "Scale…" */
+.modal.scale-dialog {
+  width: min(1100px, 96vw);
+}
+.scale-layout {
+  display: grid;
+  grid-template-columns: minmax(340px, 1.1fr) minmax(320px, 1fr);
+  gap: 16px;
+  align-items: start;
+}
+@media (max-width: 860px) {
+  .scale-layout {
+    grid-template-columns: 1fr;
+  }
+}
+.scale-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.scale-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+.scale-size {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.scale-size input[type='range'] {
+  flex: 1;
+}
+.scale-size input[type='number'] {
+  width: 72px;
+  font-size: 16px;
+}
+.scale-controls button.ghost.active {
+  border-color: var(--gold);
+  color: var(--gold);
+}
+.scale-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.scale-list li {
+  padding: 5px 8px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.scale-list li.selected {
+  border-color: var(--gold);
+}
+
+/* --------------------------------- stats --------------------------------- */
+
+.stat-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.stat {
+  padding: 2px 14px 2px 0;
+  min-width: 100px;
+}
+.stat + .stat {
+  border-left: 1px solid var(--line);
+  padding-left: 14px;
+}
+.stat b {
+  display: block;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text);
+  font-variant-numeric: tabular-nums;
+}
+.stat span {
+  color: var(--text-dim);
+  font-size: 11.5px;
+}
+
+table.plan {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 12px;
+}
+table.plan th {
+  text-align: left;
+  color: var(--text-dim);
+  font-weight: 600;
+  font-size: 11.5px;
+  padding: 6px 8px;
+  position: sticky;
+  top: 0;
+  background: var(--panel);
+  border-bottom: 1px solid var(--line);
+}
+table.plan td {
+  padding: 5px 8px;
+  border-top: 1px solid var(--line);
+  vertical-align: middle;
+}
+table.plan tbody tr:hover {
+  background: var(--hover);
+}
+
+/* -------------------------------- dialogs -------------------------------- */
+
+.modal-back {
+  position: fixed;
+  inset: 0;
+  background: var(--scrim);
+  display: grid;
+  place-items: center;
+  z-index: 10;
+  animation: fade-in var(--med) linear;
+}
+.modal {
+  width: min(980px, 94vw);
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  overflow: hidden;
+}
+.modal > header,
+.modal > footer {
+  padding: 9px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.modal > header {
+  border-bottom: 1px solid var(--line);
+  background: var(--panel-2);
+}
+.modal > footer {
+  border-top: 1px solid var(--line);
+  background: var(--panel-2);
+}
+.modal > .body {
+  padding: 12px 14px;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.modal h2 {
+  margin: 0;
+  font-family: var(--serif);
+  font-size: 17px;
+  font-weight: 500;
+}
+
+/* Update from game: one row per kind of file. */
+.update-body {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.update-row {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  padding: 7px 0;
+  border-top: 1px solid var(--line);
+}
+.update-row > span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 12.5px;
+}
+.update-row.off {
+  opacity: 0.6;
+}
+
+/* ------------------------------ appearance ------------------------------- */
+
+.preset-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 8px;
+}
+.preset {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  padding: 10px;
+  min-height: 0;
+  text-align: left;
+  white-space: normal;
+}
+.preset.active {
+  border-color: var(--gold);
+}
+.preset-swatches {
+  display: flex;
+  height: 22px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  border: 1px solid var(--line);
+}
+.preset-swatches span {
+  flex: 1;
+}
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 8px 16px;
+}
+.color-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.color-row .labels {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.2;
+  min-width: 0;
+}
+.color-row .labels span:last-child {
+  color: var(--text-faint);
+  font-size: 11px;
+}
+
+/* ID picker: live status, next free, and the ids around it. */
+.id-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+.id-input.free {
+  border-color: var(--added);
+}
+.id-input.taken {
+  border-color: var(--danger);
+}
+.id-input.warn {
+  border-color: var(--changed);
+}
+.id-status {
+  font-size: 11px;
+  white-space: nowrap;
+  max-width: 260px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.id-status.free {
+  color: var(--added);
+}
+.id-status.taken {
+  color: var(--danger);
+}
+.id-status.warn {
+  color: var(--changed);
+}
+.id-near {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.id-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 2px 8px;
+  max-height: 180px;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 4px 6px;
+  background: var(--bg);
+}
+.id-entry {
+  display: flex;
+  gap: 8px;
+  font-size: 12px;
+  padding: 1px 4px;
+  border-radius: var(--radius);
+  min-width: 0;
+}
+.id-entry .mono {
+  width: 72px;
+  flex: none;
+}
+.id-entry.free,
+.id-entry.referenced {
+  cursor: pointer;
+}
+.id-entry.free:hover,
+.id-entry.referenced:hover {
+  background: var(--hover);
+}
+.id-entry.free .mono {
+  color: var(--added);
+}
+.id-entry.referenced .mono {
+  color: var(--changed);
+}
+.id-entry.current {
+  outline: 1px solid var(--gold);
+}
+.ids-needed {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.ids-needed .ids-ranges {
+  white-space: normal;
+  word-break: break-word;
+  max-height: 58px;
+  overflow: auto;
+}
+.field-hint {
+  font-size: 11px;
+  line-height: 1.35;
+  color: var(--text-faint);
+  font-weight: 400;
+  margin-top: 2px;
+  white-space: normal;
+}
+/* An id that points at nothing. */
+.field-hint.warn {
+  color: var(--warn-text);
+}
+
+/* The in-game name, the first field: text, not a number. */
+.field-input input.game-name {
+  font-family: inherit;
+}
+
+/* About Spellforge: the credits, by how Spellforge uses each. */
+.about-credits p {
+  margin: 0;
+}
+.about-credits h3 {
+  margin: 0 0 6px;
+  font-size: 13px;
+}
+.about-credits ul {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}

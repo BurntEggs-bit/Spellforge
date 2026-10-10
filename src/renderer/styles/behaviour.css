@@ -1,0 +1,375 @@
+/* The Animations page's Behaviour tab: recipes, comparisons and the script editor. */
+
+/* Behaviour (c0000.hks recipes). */
+.behaviour-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px 14px;
+}
+.recipe-card {
+  border-top: 1px solid var(--line);
+  padding: 7px 2px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.recipe-card.off {
+  opacity: 0.55;
+}
+.recipe-card.bad {
+  border-left: 2px solid var(--danger);
+  padding-left: 8px;
+}
+.recipe-kind {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+.recipe-text {
+  font-size: 12.5px;
+  line-height: 1.45;
+}
+.recipe-editor {
+  border: 1px solid var(--line-strong);
+  border-left: 2px solid var(--gold);
+  border-radius: var(--radius);
+  background: var(--panel-2);
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.recipe-window {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 6px;
+}
+.recipe-code {
+  width: 100%;
+  font-size: 12px;
+}
+.event-pick {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  min-width: 0;
+  width: 100%;
+}
+.event-pick input {
+  width: 150px;
+}
+.event-pick select {
+  flex: 1;
+  min-width: 0;
+}
+.behaviour-credit {
+  font-size: 11.5px;
+  line-height: 1.45;
+  margin-top: 6px;
+}
+.script-body {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  gap: 10px;
+  height: min(70vh, 720px);
+}
+.script-side {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-height: 0;
+}
+.script-list {
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  flex: 1;
+  min-height: 0;
+}
+.script-hit {
+  font-size: 11px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.script-code {
+  margin: 0;
+  overflow: auto;
+  font-size: 12px;
+  line-height: 1.5;
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--field);
+  white-space: pre;
+  tab-size: 4;
+}
+.compare-box {
+  margin-top: 4px;
+  padding: 6px 10px;
+  border-left: 2px solid var(--line-strong);
+  font-size: 12px;
+  line-height: 1.45;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.compare-box.outdated {
+  border-left-color: var(--changed);
+}
+
+/* The behaviour script editor (animations/behaviour/ScriptWorkspace.tsx). */
+/* Two columns: .modal > .body is a flex column otherwise. */
+.modal > .body.script-body {
+  display: grid;
+}
+.modal.script-workspace > .body.script-body {
+  grid-template-columns: 290px minmax(0, 1fr);
+  height: min(80vh, 860px);
+}
+.script-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  margin-top: 2px;
+}
+.script-mine {
+  flex: 0 0 auto;
+  max-height: 34%;
+}
+.script-mine .list-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.unsaved-dot {
+  color: var(--changed);
+  font-size: 10px;
+}
+.script-main {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 0;
+  min-height: 0;
+}
+.script-toolbar {
+  gap: 8px;
+  align-items: center;
+}
+.script-title {
+  width: 260px;
+}
+.script-status {
+  gap: 10px;
+  align-items: center;
+  font-size: 12px;
+}
+.script-problems {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: auto;
+  max-height: 170px;
+  min-height: 60px;
+  font-size: 12px;
+}
+.problem {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  text-align: left;
+  padding: 4px 8px;
+  border-radius: var(--radius);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text);
+  line-height: 1.4;
+  height: auto;
+}
+.problem:hover {
+  background: var(--hover);
+  border-color: var(--line);
+}
+.problem-icon {
+  width: 14px;
+  flex: none;
+  text-align: center;
+}
+.problem-at {
+  flex: none;
+  min-width: 46px;
+  color: var(--text-dim);
+}
+.problem-source {
+  flex: none;
+  font-size: 11px;
+}
+.p-error .problem-icon,
+.problem.p-error:not(button) {
+  color: var(--danger);
+}
+.p-warning .problem-icon {
+  color: var(--changed);
+}
+.p-info .problem-icon {
+  color: var(--shared);
+}
+.script-listing {
+  max-height: 170px;
+  min-height: 60px;
+  font-size: 11.5px;
+}
+.code-editor {
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--field);
+  overflow: hidden;
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+.code-editor:focus-within {
+  border-color: var(--gold);
+}
+.code-gutter {
+  flex: none;
+  width: 48px;
+  padding: 8px 0;
+  overflow: hidden;
+  border-right: 1px solid var(--line);
+  background: var(--panel-2);
+  color: var(--text-faint);
+  font-family: var(--mono);
+  text-align: right;
+  user-select: none;
+}
+.code-gutter > div {
+  padding-right: 8px;
+  height: 1.55em;
+}
+.code-gutter .g-error {
+  color: var(--danger);
+  background: var(--danger-soft);
+  box-shadow: inset 2px 0 0 var(--danger);
+}
+.code-gutter .g-warning {
+  color: var(--changed);
+  box-shadow: inset 2px 0 0 var(--changed);
+}
+.code-gutter .g-info {
+  box-shadow: inset 2px 0 0 var(--shared);
+}
+.code-gutter-pad {
+  height: 40px;
+}
+.code-area {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+}
+.code-hl,
+.code-input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 8px 10px 40px;
+  border: 0;
+  font-family: var(--mono);
+  font-size: inherit;
+  line-height: inherit;
+  letter-spacing: 0;
+  white-space: pre;
+  overflow-wrap: normal;
+  word-break: normal;
+  tab-size: 4;
+  box-sizing: border-box;
+}
+.code-hl {
+  overflow: hidden;
+  pointer-events: none;
+  color: var(--text);
+}
+.code-input {
+  overflow: auto;
+  resize: none;
+  outline: none;
+  background: transparent;
+  color: transparent;
+  caret-color: var(--text);
+  width: 100%;
+  height: 100%;
+  border-radius: 0;
+}
+.code-input::selection {
+  background: var(--accent-glow);
+  color: transparent;
+}
+.code-editor.read-only .code-input {
+  caret-color: transparent;
+}
+.tk-k {
+  color: var(--gold);
+  font-weight: 600;
+}
+.tk-c {
+  color: var(--text-faint);
+  font-style: italic;
+}
+.tk-s {
+  color: var(--added);
+}
+.tk-n {
+  color: var(--changed);
+}
+.tk-b {
+  color: var(--shared);
+  font-weight: 600;
+}
+.tk-f {
+  color: color-mix(in srgb, var(--gold) 55%, var(--text));
+}
+.tk-e {
+  color: var(--shared);
+}
+.tk-v {
+  color: color-mix(in srgb, var(--changed) 60%, var(--text));
+}
+.sq-error {
+  text-decoration: underline wavy var(--danger);
+  text-decoration-skip-ink: none;
+  text-underline-offset: 3px;
+  background: var(--danger-soft);
+}
+.sq-warning {
+  text-decoration: underline wavy var(--changed);
+  text-decoration-skip-ink: none;
+  text-underline-offset: 3px;
+}
+.sq-info {
+  text-decoration: underline dotted var(--shared);
+  text-underline-offset: 3px;
+}
+.scripts-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}
+.scripts-section-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.recipe-form {
+  border-left: 2px solid var(--line-strong);
+  padding-left: 8px;
+  margin-bottom: 6px;
+}

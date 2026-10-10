@@ -1,0 +1,32 @@
+/* Events page: an event's lines, numbered, with their ids as links. */
+
+.event-lines {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  font-size: 12.5px;
+}
+.event-line {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 8px;
+  padding: 1px 0;
+  line-height: 1.45;
+}
+.event-line > .mono {
+  text-align: right;
+  font-size: 11px;
+  padding-top: 1px;
+}
+/* Instructions Spellforge has no words for show their numbers, dimmed. */
+.event-line.unknown > span:last-child {
+  color: var(--text-dim);
+  font-family: var(--mono);
+  font-size: 11.5px;
+}
+/* An id inside a line: the line's own size, a link. */
+.ref-link.inline {
+  font-size: inherit;
+  font-weight: 500;
+  display: inline;
+}

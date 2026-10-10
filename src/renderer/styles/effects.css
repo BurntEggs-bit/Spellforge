@@ -1,0 +1,327 @@
+/* The Effects page: swatches, thumbnails, the parts editor, model and texture slots, the preview. */
+
+.swatch,
+.thumb {
+  background-color: var(--panel-2);
+  background-image:
+    linear-gradient(45deg, var(--checker) 25%, transparent 25%),
+    linear-gradient(-45deg, var(--checker) 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, var(--checker) 75%),
+    linear-gradient(-45deg, transparent 75%, var(--checker) 75%);
+}
+.swatch {
+  width: 26px;
+  height: 18px;
+  border-radius: 2px;
+  border: 1px solid var(--line-strong);
+  flex: none;
+  background-size: 8px 8px;
+  background-position:
+    0 0,
+    0 4px,
+    4px -4px,
+    -4px 0;
+  position: relative;
+  overflow: hidden;
+}
+.swatch > span {
+  position: absolute;
+  inset: 0;
+}
+.swatch.wide {
+  width: 70px;
+}
+
+.thumb {
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 2px;
+  overflow: hidden;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-faint);
+  background-size: 10px 10px;
+  background-position:
+    0 0,
+    0 5px,
+    5px -5px,
+    -5px 0;
+}
+.thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.slot {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 8px;
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--radius);
+  background: var(--bg);
+}
+.slot.drop-ok {
+  border-color: var(--gold);
+  background: var(--accent-soft);
+}
+.slot.missing {
+  border-color: var(--danger);
+}
+
+.palette {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(78px, 1fr));
+  gap: 6px;
+  max-height: 300px;
+  overflow: auto;
+  padding: 2px;
+}
+.asset {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 5px;
+  background: var(--bg);
+  cursor: pointer;
+  text-align: center;
+  font-size: 11px;
+  user-select: none;
+}
+/* A library tile dragged onto a slot (effects/assetDrag.ts): its copy follows the pointer and never takes it. */
+.asset-ghost {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 2147483000;
+  pointer-events: none;
+  opacity: 0.8;
+}
+.asset-dragging,
+.asset-dragging * {
+  cursor: grabbing !important;
+}
+.asset:hover {
+  border-color: var(--line-strong);
+  background: var(--hover);
+}
+.asset .t {
+  color: var(--text-faint);
+}
+
+.op-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.preview-canvas {
+  height: 360px;
+  background: var(--bg);
+  border-bottom: 1px solid var(--line);
+  cursor: grab;
+  touch-action: none;
+  overflow: hidden;
+}
+.preview-canvas:active {
+  cursor: grabbing;
+}
+.preview-lighting {
+  flex-wrap: wrap;
+  row-gap: 4px;
+  font-size: 12px;
+}
+.preview-lighting select {
+  max-width: 220px;
+}
+.preview-lighting .row {
+  gap: 4px;
+}
+.preview-lighting button.ghost {
+  padding: 0 6px;
+}
+
+/* Parts: the effect node by node, with friendly and advanced editing. */
+.parts {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.part {
+  border-radius: 0;
+  position: relative;
+}
+.part.selected {
+  background: var(--accent-soft);
+}
+.part.selected::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--gold);
+}
+.part-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 8px;
+  cursor: pointer;
+}
+.part-row:hover {
+  background: var(--hover);
+}
+.part-summary {
+  font-size: 11px;
+}
+.part-editor {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 4px 10px 12px;
+}
+.part-desc {
+  font-size: 11px;
+}
+.part-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+.part-group-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.part-hint {
+  font-size: 11px;
+  margin-top: -2px;
+}
+.fx-field {
+  display: grid;
+  grid-template-columns: minmax(150px, 38%) 1fr;
+  align-items: center;
+  column-gap: 10px;
+  row-gap: 1px;
+  padding: 2px 0;
+}
+.fx-field-label {
+  font-size: 12px;
+  cursor: help;
+}
+.fx-field-label .mono {
+  font-size: 10.5px;
+}
+.fx-field-value {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.fx-field-value input.num {
+  text-align: right;
+}
+.fx-field-note {
+  grid-column: 2;
+  font-size: 11px;
+}
+.fx-field.compact {
+  grid-template-columns: minmax(130px, 34%) 1fr;
+}
+.scale-chips {
+  display: inline-flex;
+  gap: 2px;
+  margin-left: auto;
+}
+.chip {
+  padding: 0 6px;
+  font-size: 11px;
+  border-radius: var(--radius);
+  min-height: 0;
+  height: 20px;
+}
+.fx-action {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 4px 8px;
+}
+.fx-action > summary {
+  cursor: pointer;
+  padding: 2px 0;
+}
+.fx-action-desc {
+  font-size: 11px;
+  margin: 2px 0 6px;
+}
+
+/* Models & textures: what the effect uses, then the library. */
+.subhead {
+  font-weight: 600;
+  font-size: 12px;
+  color: var(--text-dim);
+}
+.used-part {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.used-part-title {
+  font-size: 11px;
+}
+.model-textures-wrap {
+  margin: 4px 0 2px 58px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.model-textures {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.model-texture {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  padding: 3px 6px 3px 3px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg);
+}
+.model-texture .mono {
+  font-size: 10.5px;
+}
+.picked {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 8px 10px;
+  border-left: 2px solid var(--gold);
+  background: var(--accent-soft);
+}
+.asset.used {
+  border-color: var(--shared);
+}
+.asset.picked {
+  background: var(--accent-soft);
+  border-color: var(--gold);
+}
+.asset .owner {
+  font-size: 9px;
+  color: var(--text-faint);
+  font-family: var(--sans, inherit);
+}

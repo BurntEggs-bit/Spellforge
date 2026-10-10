@@ -1,0 +1,519 @@
+/* The Animations page: categories, the timeline, the event inspector, Moveset, Find and Combo. */
+
+.anim-cat-label {
+  flex: none;
+  color: var(--text);
+}
+.anim-editor h2.mono {
+  font-size: 17px;
+}
+.reg-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex: none;
+  background: var(--text-faint);
+}
+.reg-dot.registered {
+  background: var(--added);
+}
+.reg-dot.missing {
+  background: var(--changed);
+}
+.reg-dot.unsupported {
+  background: transparent;
+  border: 1px solid var(--text-faint);
+}
+.reg-banner {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 5px 10px;
+  border-left: 2px solid var(--line-strong);
+  font-size: 12px;
+}
+.reg-banner.registered {
+  border-left-color: var(--added);
+}
+.reg-banner.missing {
+  border-left-color: var(--changed);
+  background: var(--changed-soft);
+  color: var(--warn-text);
+}
+
+/* Event kinds share these colours across the timeline, inspector and picker. */
+.kind-attack {
+  --kind: var(--danger);
+}
+.kind-sfx {
+  --kind: var(--shared);
+}
+.kind-sound {
+  --kind: var(--added);
+}
+.kind-speffect {
+  --kind: #b48ce0;
+}
+.kind-flag {
+  --kind: #8d9bb0;
+}
+.kind-other {
+  --kind: var(--text-faint);
+}
+.kind-dot {
+  width: 9px;
+  height: 9px;
+  border-radius: 2px;
+  flex: none;
+  background: var(--kind);
+}
+
+.timeline {
+  overflow: auto;
+  max-height: min(56vh, 620px);
+  position: relative;
+  user-select: none;
+}
+.tl-inner {
+  position: relative;
+  min-width: 100%;
+}
+.tl-ruler,
+.tl-lane {
+  display: flex;
+}
+.tl-ruler {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: var(--panel-2);
+  border-bottom: 1px solid var(--line);
+  height: 26px;
+}
+.tl-label {
+  position: sticky;
+  left: 0;
+  z-index: 2;
+  width: 170px;
+  flex: none;
+  background: var(--panel-2);
+  border-right: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  font-size: 12px;
+  color: var(--text-dim);
+  border-left: 3px solid var(--kind, transparent);
+}
+.tl-corner {
+  border-left-color: transparent;
+  gap: 0;
+  padding: 0 4px;
+}
+.tl-corner button {
+  font-size: 11px;
+  padding: 2px 7px;
+}
+.tl-lane {
+  border-bottom: 1px solid var(--line);
+}
+.tl-lane:hover .tl-label {
+  color: var(--text);
+}
+.tl-track {
+  position: relative;
+  flex: none;
+}
+.tl-tick {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  padding: 5px 0 0 4px;
+  font-size: 10.5px;
+  color: var(--text-faint);
+  border-left: 1px solid var(--line-strong);
+  pointer-events: none;
+}
+.tl-end {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 1px dashed var(--gold-dim);
+  pointer-events: none;
+}
+.tl-grid {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  border-left: 1px solid var(--line);
+  opacity: 0.5;
+  pointer-events: none;
+}
+.tl-bar {
+  position: absolute;
+  height: 16px;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--kind) 26%, transparent);
+  border: 1px solid color-mix(in srgb, var(--kind) 65%, transparent);
+  color: var(--text);
+  font-size: 10.5px;
+  line-height: 14px;
+  padding: 0 4px;
+  display: flex;
+  cursor: grab;
+  overflow: hidden;
+  min-width: 4px;
+}
+.tl-bar:active {
+  cursor: grabbing;
+}
+.tl-bar.hover {
+  background: color-mix(in srgb, var(--kind) 42%, transparent);
+}
+.tl-bar.selected {
+  background: color-mix(in srgb, var(--kind) 55%, transparent);
+  border-color: var(--text);
+  z-index: 1;
+}
+.tl-bar::before,
+.tl-bar::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 5px;
+  cursor: ew-resize;
+}
+.tl-bar::before {
+  left: 0;
+}
+.tl-bar::after {
+  right: 0;
+}
+.type-list {
+  max-height: 52vh;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+}
+.raw-hex {
+  width: 100%;
+  font-size: 12px;
+}
+.tl-bar.open {
+  border-right-style: dashed;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  -webkit-mask-image: linear-gradient(90deg, #000 calc(100% - 40px), transparent);
+}
+
+/* The ruler scrubs; the playhead marks the clock; an event acting at the playhead glows. */
+.tl-scrub {
+  cursor: ew-resize;
+}
+.tl-playhead {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  border-left: 2px solid var(--danger);
+  pointer-events: none;
+  z-index: 4;
+}
+.tl-bar.live {
+  background: color-mix(in srgb, var(--kind) 78%, transparent);
+  border-color: var(--kind);
+  color: #fff;
+}
+
+/* An event's judge id, read for the weapon in the viewport's right hand. */
+.judge-mine {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+  padding: 4px 8px;
+  margin-bottom: 4px;
+  border-left: 2px solid var(--line-strong);
+  font-size: 12px;
+}
+.judge-mine.missing {
+  background: var(--changed-soft);
+  border-left-color: var(--changed);
+}
+
+/* Moveset panel: a weapon given other weapons' moves and a skill. */
+.moveset-about {
+  font-size: 12px;
+  line-height: 1.45;
+}
+.moveset-body {
+  padding: 10px 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+/* Below the viewer the panel is wide: the slots and the sections flow into columns. */
+.moveset-slots {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2px 16px;
+}
+.moveset-sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 14px 18px;
+  align-items: start;
+}
+.moveset-slot {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 3px 6px;
+  align-items: center;
+  padding: 5px 6px;
+  border-radius: var(--radius);
+  border-left: 2px solid transparent;
+}
+.moveset-slot.changed {
+  background: var(--changed-soft);
+  border-left-color: var(--changed);
+}
+.moveset-slot select {
+  min-width: 0;
+}
+.moveset-slot-name {
+  grid-column: 1 / -1;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+}
+.moveset-slot-name > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.moveset-slot-name .faint {
+  font-size: 11px;
+}
+/* A slot casting a spell: whose cast its attacks look like. */
+.moveset-cast,
+.moveset-grip {
+  grid-column: 1 / -1;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 6px;
+  align-items: center;
+  padding-left: 12px;
+}
+.moveset-cast .faint,
+.moveset-grip .faint {
+  font-size: 11px;
+}
+/* A slot whose attacks enemy moves made: one line each. */
+.moveset-enemy {
+  grid-column: 1 / -1;
+  padding-left: 12px;
+  font-size: 11px;
+  line-height: 1.35;
+  min-width: 0;
+}
+.moveset-enemy > div {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.moveset-section {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.moveset-section .moveset-slot {
+  grid-template-columns: minmax(0, 1fr) auto;
+  padding: 0;
+}
+.moveset-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+.moveset-actions {
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.moveset-note {
+  font-size: 12px;
+  line-height: 1.45;
+}
+.moveset-checks {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 2px 10px;
+  font-size: 12px;
+}
+
+/* What an animation id is ("R2 (two-handed)", "skill"), beside its name. */
+.anim-what {
+  font-size: 12px;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+/* ------------------------- timeline: selection, mute ------------------------ */
+
+/* The box dragged out on the empty timeline to select events. */
+.tl-box {
+  position: absolute;
+  z-index: 5;
+  border: 1px solid var(--gold);
+  background: color-mix(in srgb, var(--gold) 10%, transparent);
+  pointer-events: none;
+}
+/* With several selected, the one the inspector would show. */
+.tl-bar.primary {
+  border-color: var(--gold);
+  outline: 1px solid var(--gold);
+}
+/* Muted (1, 4) or not soloed (2): it doesn't act in the viewer. */
+.tl-bar.muted {
+  opacity: 0.38;
+  background-image: repeating-linear-gradient(
+    135deg,
+    transparent 0 5px,
+    color-mix(in srgb, var(--text) 10%, transparent) 5px 7px
+  );
+}
+.tl-bar.solo {
+  outline: 1px dashed var(--gold);
+  outline-offset: 1px;
+}
+.tl-lane.muted-type .tl-label {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+.tl-status {
+  font-size: 11.5px;
+  padding: 4px 2px 0;
+}
+.tl-order {
+  padding: 2px 6px;
+  font-size: 12px;
+}
+.multi-note {
+  font-size: 12px;
+  line-height: 1.45;
+  padding: 6px 0 0;
+  border-top: 1px solid var(--line);
+  color: var(--text-dim);
+}
+.multi-note b {
+  color: var(--text);
+}
+
+/* The project's own name and tags for an animation (F2). */
+.anim-title {
+  font-size: 12px;
+  padding: 0 4px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text);
+  min-height: 0;
+}
+.anim-tag {
+  font-size: 11px;
+  color: var(--text-faint);
+}
+.list-item .anim-list-title {
+  font-size: 11px;
+  color: var(--text-dim);
+}
+
+/* Find (Ctrl+F). */
+.find-head {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.find-group {
+  padding: 2px 0 6px;
+}
+.find-anim {
+  font-size: 11.5px;
+  color: var(--text-dim);
+  padding: 6px 10px 2px;
+}
+.find-hit {
+  display: grid;
+  grid-template-columns: 58px minmax(0, 1fr);
+  gap: 0 8px;
+  font-size: 12px;
+}
+.find-hit .find-field {
+  grid-column: 2;
+  font-size: 11px;
+}
+
+/* Keyboard shortcuts sheet. */
+.shortcut-list {
+  display: grid;
+  grid-template-columns: minmax(170px, auto) 1fr;
+  gap: 6px 14px;
+  font-size: 12.5px;
+  max-height: 64vh;
+  overflow: auto;
+}
+.shortcut-keys {
+  color: var(--text);
+  white-space: nowrap;
+}
+/* The events header's hint gives way first in a narrow panel. */
+.tl-hint {
+  flex: 1 1 0;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Combo viewer (F8). */
+.combo-body {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px 12px;
+}
+.combo-step {
+  padding: 5px 0;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.combo-n {
+  width: 18px;
+  height: 18px;
+  color: var(--text-dim);
+  font-size: 11.5px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+}
+.combo-cut {
+  margin-left: 26px;
+  font-size: 12px;
+  gap: 6px;
+}
+.combo-cut select {
+  padding: 2px 4px;
+  font-size: 12px;
+}
+.combo-add {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 4px;
+}

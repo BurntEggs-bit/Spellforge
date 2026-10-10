@@ -1,0 +1,8 @@
+out/
+release/
+node_modules/
+/data/
+media/
+docs/
+*.md
+package-lock.json

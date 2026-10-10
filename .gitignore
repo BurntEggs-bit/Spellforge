@@ -1,0 +1,29 @@
+# Dependencies and build output
+node_modules/
+out/
+release/
+
+# Logs, crash dumps and OS files
+*.log
+*.dmp
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Game files and mod output never belong in git...
+*.dcx
+*.bin
+*.param
+*.fxr
+*.tpf
+*.dds
+*.flver
+# ...except data Spellforge ships (the Vorbis codebooks its sound player needs)
+!data/er/**/*.bin
+
+# The walkthrough videos and their chapter lists: far too large for git (media/tutorial/README.md)
+media/tutorial/*.mp4
+media/tutorial/*.json
+
+# The community's effect names: not redistributed here (README.md, "Building from source")
+data/er/effect-names.json

@@ -1,0 +1,509 @@
+/*
+ * Foundation: colour tokens (theme.ts overwrites them at startup; these are
+ * the Roundtable defaults), type, controls, utilities and motion.
+ *
+ * The look is an editor's: flat surfaces divided by hairlines, small corners,
+ * no glows or shadows except on things that float (menus, dialogs). The
+ * accent marks where you are (selection, focus) and the one main action;
+ * states are words in their colour, not pills.
+ */
+:root {
+  --bg: #17181b;
+  --panel: #1d1e22;
+  --panel-2: #212226;
+  --raised: #292a2f;
+  --line: #303238;
+  --line-strong: #3d3f46;
+  --hover: #24252a;
+  --field: #18191c;
+  --text: #e6e0d3;
+  --text-dim: #a8a194;
+  --text-faint: #6f6a61;
+  --gold: #dcb96a;
+  --gold-dim: #85703f;
+  --accent-ink: #17140d;
+  --accent-soft: rgba(220, 185, 106, 0.1);
+  --accent-glow: rgba(220, 185, 106, 0.32);
+  --added: #8fbf78;
+  --changed: #e38b4c;
+  --shared: #84a9cf;
+  --danger: #e2614f;
+  --added-soft: rgba(143, 191, 120, 0.14);
+  --changed-soft: rgba(227, 139, 76, 0.14);
+  --shared-soft: rgba(132, 169, 207, 0.14);
+  --danger-soft: rgba(226, 97, 79, 0.1);
+  --warn-text: #e9b98f;
+  --checker: #222327;
+  --scrim: rgba(8, 8, 10, 0.55);
+
+  --base-size: 13px;
+  --row-pad: 4px;
+  --radius: 3px;
+  --radius-lg: 4px;
+  --control-h: 26px;
+  --font: 'Segoe UI Variable Text', 'Segoe UI', system-ui, sans-serif;
+  /* The name of what's selected, dialog titles and the start screen: Windows' own optical serif. */
+  --serif: 'Sitka Subheading', 'Sitka Text', Sitka, Cambria, Georgia, serif;
+  --mono: 'Cascadia Mono', 'Cascadia Code', Consolas, ui-monospace, monospace;
+  --shadow: 0 12px 32px rgba(0, 0, 0, 0.45);
+  --shadow-sm: none;
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --fast: 80ms;
+  --med: 120ms;
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font: var(--base-size) / 1.4 var(--font);
+  font-variant-numeric: tabular-nums;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+/* The app fills the window and scrolls inside its panels, never as a page. */
+html,
+body {
+  overflow: clip;
+}
+
+::selection {
+  background: var(--accent-glow);
+}
+
+/* Thin scrollbars. */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-thumb {
+  background: color-mix(in srgb, var(--line-strong) 80%, transparent);
+  border: 3px solid transparent;
+  background-clip: padding-box;
+  border-radius: 6px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background-color: var(--text-faint);
+}
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+h1,
+h2,
+h3 {
+  letter-spacing: 0;
+}
+
+/* -------------------------------- controls ------------------------------- */
+
+button {
+  font: inherit;
+  font-weight: 500;
+  color: var(--text);
+  background: var(--raised);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  min-height: var(--control-h);
+  padding: 0 10px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  transition:
+    border-color var(--fast) linear,
+    background var(--fast) linear,
+    color var(--fast) linear;
+  white-space: nowrap;
+}
+button:hover:not(:disabled) {
+  border-color: color-mix(in srgb, var(--text) 22%, var(--line-strong));
+  background: color-mix(in srgb, var(--raised) 88%, var(--text));
+}
+button:active:not(:disabled) {
+  background: color-mix(in srgb, var(--raised) 80%, var(--bg));
+}
+button:disabled {
+  opacity: 0.42;
+  cursor: default;
+}
+button.primary {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: var(--accent-ink);
+  font-weight: 600;
+}
+button.primary:hover:not(:disabled) {
+  background: color-mix(in srgb, var(--gold) 88%, #fff);
+  border-color: color-mix(in srgb, var(--gold) 88%, #fff);
+}
+button.primary:active:not(:disabled) {
+  background: color-mix(in srgb, var(--gold) 85%, #000);
+}
+/* A disabled primary button shouldn't look like the thing to click. */
+button.primary:disabled {
+  background: var(--raised);
+  border-color: var(--line-strong);
+  color: var(--text-faint);
+  opacity: 1;
+}
+button.ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--text-dim);
+}
+button.ghost:hover:not(:disabled) {
+  color: var(--text);
+  border-color: transparent;
+  background: var(--hover);
+}
+/* Can't be undone (discarding unsaved changes kept from last time). */
+button.danger {
+  border-color: color-mix(in srgb, var(--danger) 60%, transparent);
+  color: var(--danger);
+  background: transparent;
+}
+button.danger:hover:not(:disabled) {
+  background: var(--danger-soft);
+  border-color: var(--danger);
+}
+button.icon {
+  min-height: 22px;
+  padding: 0 6px;
+  line-height: 1;
+}
+button.square {
+  width: var(--control-h);
+  padding: 0;
+}
+.icon-svg {
+  flex: none;
+  display: block;
+}
+
+input,
+select,
+textarea {
+  font: inherit;
+  color: var(--text);
+  background: var(--field);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  min-width: 0;
+  transition: border-color var(--fast) linear;
+}
+input,
+select {
+  min-height: var(--control-h);
+  padding: 0 7px;
+}
+textarea {
+  padding: 5px 7px;
+  resize: vertical;
+}
+input::placeholder,
+textarea::placeholder {
+  color: var(--text-faint);
+}
+input:hover,
+select:hover,
+textarea:hover {
+  border-color: color-mix(in srgb, var(--text) 20%, var(--line-strong));
+}
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--gold);
+}
+button:focus-visible {
+  outline: 1px solid var(--gold);
+  outline-offset: 1px;
+}
+select {
+  cursor: pointer;
+}
+input[type='checkbox'] {
+  min-height: 0;
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  accent-color: var(--gold);
+  cursor: pointer;
+}
+input[type='range'] {
+  min-height: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  accent-color: var(--gold);
+  cursor: pointer;
+}
+input[type='range']:focus {
+  box-shadow: none;
+}
+input[type='color'] {
+  padding: 2px;
+  width: 34px;
+  height: 24px;
+  min-height: 0;
+  cursor: pointer;
+}
+
+/*
+ * A choice of a few, shown side by side (Weapons / Items / Spells…): plain
+ * tabs, the chosen one raised.
+ */
+.seg {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1px;
+  flex: none;
+}
+.seg > button {
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-dim);
+  min-height: 24px;
+  padding: 0 9px;
+  border-radius: var(--radius);
+}
+.seg > button:hover:not(:disabled) {
+  color: var(--text);
+  border-color: transparent;
+  background: var(--hover);
+}
+.seg > button.active {
+  background: var(--raised);
+  border-color: var(--line-strong);
+  color: var(--text);
+}
+.seg > button.active .icon-svg {
+  color: var(--gold);
+}
+@media (max-width: 1000px) {
+  .seg .seg-label {
+    display: none;
+  }
+}
+
+/* A small one inside a panel head. */
+.seg.small {
+  align-self: flex-start;
+}
+.seg.small > button {
+  min-height: 21px;
+  padding: 0 8px;
+  font-size: 11.5px;
+}
+
+/* A button that reads as a link. */
+button.link {
+  background: none;
+  border: none;
+  padding: 0;
+  color: var(--shared);
+  cursor: pointer;
+  font: inherit;
+  min-height: 0;
+}
+button.link:hover:not(:disabled) {
+  background: none;
+  text-decoration: underline;
+}
+
+/* -------------------------------- utilities ------------------------------ */
+
+/* Ids, values and paths: the UI face with figures that line up in columns. */
+.mono {
+  font-variant-numeric: tabular-nums;
+}
+/* Code reads in a code face: scripts, compiled listings, raw event bytes. */
+.code,
+.raw-hex,
+.script-code,
+.script-hit,
+.recipe-code,
+.behaviour-body .mono,
+.script-workspace .mono,
+.recipe-editor .mono {
+  font-family: var(--mono);
+  font-size: 0.92em;
+}
+.dim {
+  color: var(--text-dim);
+}
+.faint {
+  color: var(--text-faint);
+}
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.grow {
+  flex: 1;
+  min-width: 0;
+}
+.nowrap {
+  white-space: nowrap;
+}
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ok {
+  color: var(--added);
+}
+.bad {
+  color: var(--danger);
+}
+/* Facts about something, side by side ("a020_030000.hkt   61 events   45 frames"): spaced, not dotted. */
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  column-gap: 14px;
+  row-gap: 2px;
+  min-width: 0;
+}
+
+/* A check's outcome: it passes, or what's wrong. */
+.ok-text {
+  color: var(--added);
+}
+.warn-text {
+  color: var(--warn-text, var(--danger));
+}
+
+/* A state, as a word in its colour: "new", "edited", "shared"; a kind ("Behavior") in the faint text colour. */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 0;
+  flex: none;
+  line-height: 16px;
+  color: var(--text-faint);
+}
+.badge.added,
+.badge.clone,
+.badge.root {
+  color: var(--added);
+}
+.badge.changed {
+  color: var(--changed);
+}
+.badge.shared {
+  color: var(--shared);
+}
+.badge.kind {
+  color: var(--text-faint);
+  font-weight: 400;
+}
+
+/* A note about a problem: a rule down its side, its text in the warning colour. */
+.warn {
+  border-left: 2px solid var(--changed);
+  background: var(--changed-soft);
+  color: var(--warn-text);
+  padding: 6px 10px;
+  border-radius: 0;
+  font-size: 12px;
+  line-height: 1.45;
+}
+.error {
+  border-left: 2px solid var(--danger);
+  background: var(--danger-soft);
+  color: var(--danger);
+  padding: 6px 10px;
+  border-radius: 0;
+  font-size: 12px;
+  white-space: pre-wrap;
+}
+
+/* Text newer in the installed game (Text page), a move that fires a bullet (Enemies page). */
+.badge.outdated {
+  color: var(--text-faint);
+  font-style: italic;
+}
+
+/* A note in a panel or dialog ("Made with game 1.16.1; you have 1.17.1"); .warn when it is a problem. */
+.version-note {
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--text-dim);
+  padding: 2px 0;
+}
+.version-note.warn {
+  color: var(--warn-text);
+  background: var(--changed-soft);
+  border-left: 2px solid var(--changed);
+  padding: 6px 10px;
+}
+.version-note b {
+  color: var(--text);
+}
+
+/* --------------------------------- motion -------------------------------- */
+
+/* Only answers to what you do (a menu opening) and progress; nothing animates on its own. */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes pop {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes slide-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/*
+ * Reduced motion: no transitions at all, rather than short ones. Every
+ * element's transition-property starts as `all`, so a short duration on every
+ * element would transition every property of every element: the dock's panels
+ * would trail its layout, and "Fill the window" could leave the viewer at its
+ * old size.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    transition: none !important;
+  }
+}

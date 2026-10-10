@@ -1,0 +1,108 @@
+{
+  "name": "spellforge",
+  "version": "0.4.0",
+  "description": "Elden Ring weapon, bullet, effect and animation editor",
+  "author": "Spellforge",
+  "license": "MIT-0",
+  "private": true,
+  "type": "module",
+  "main": "out/main/index.js",
+  "engines": {
+    "node": ">=22.18"
+  },
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "electron-vite build",
+    "start": "electron-vite preview",
+    "typecheck": "tsc --noEmit -p tsconfig.node.json && tsc --noEmit -p tsconfig.web.json",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "node --test \"tests/**/*.test.ts\"",
+    "dist": "npm run build && electron-builder --win dir",
+    "credits": "node scripts/write-credits.ts"
+  },
+  "dependencies": {
+    "@cccode/fxr": "^32.1.1",
+    "fast-xml-parser": "^5.0.0",
+    "koffi": "^3.3.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^24.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@types/three": "^0.180.0",
+    "@vitejs/plugin-react": "^5.0.0",
+    "dockview-react": "^8.4.1",
+    "electron": "^44.5.1",
+    "electron-builder": "^26.15.3",
+    "electron-vite": "^4.0.0",
+    "eslint": "^10.12.0",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "globals": "^17.13.0",
+    "prettier": "^3.9.9",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "three": "^0.180.0",
+    "typescript": "^5.7.0",
+    "typescript-eslint": "^8.71.1",
+    "vite": "^7.0.0"
+  },
+  "allowScripts": {
+    "esbuild@0.25.12": true,
+    "esbuild@0.28.2": true,
+    "koffi@3.3.2": true,
+    "electron@44.5.1": true
+  },
+  "build": {
+    "appId": "dev.spellforge.app",
+    "productName": "Spellforge",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "out/**",
+      "package.json"
+    ],
+    "asarUnpack": [
+      "node_modules/koffi/**"
+    ],
+    "copyright": "Copyright © 2026 Spellforge",
+    "win": {
+      "target": [
+        "dir"
+      ],
+      "icon": "build/icon.ico"
+    },
+    "npmRebuild": false,
+    "extraResources": [
+      {
+        "from": "data",
+        "to": "data"
+      },
+      {
+        "from": "media/tutorial",
+        "to": "tutorial",
+        "filter": [
+          "*.mp4",
+          "*.json"
+        ]
+      }
+    ],
+    "extraFiles": [
+      {
+        "from": "LICENSE",
+        "to": "LICENSE.txt"
+      },
+      {
+        "from": "CREDITS.md",
+        "to": "CREDITS.md"
+      },
+      {
+        "from": "THIRD_PARTY_NOTICES.txt",
+        "to": "THIRD_PARTY_NOTICES.txt"
+      }
+    ]
+  }
+}

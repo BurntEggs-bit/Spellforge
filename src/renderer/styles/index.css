@@ -1,0 +1,15 @@
+/* Spellforge styles, in cascade order. Every colour is a theme variable (see app/theme.ts). */
+@import './base.css';
+@import './layout.css';
+@import './params.css';
+@import './topbar.css';
+@import './panels.css';
+@import './text.css';
+@import './effects.css';
+@import './animations.css';
+@import './viewer.css';
+@import './behaviour.css';
+@import './menu.css';
+@import './dock.css';
+@import './enemies.css';
+@import './events.css';

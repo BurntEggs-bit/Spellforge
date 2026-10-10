@@ -1,0 +1,172 @@
+/* Menus that drop from a button (MenuButton, shared/menu.tsx). */
+
+.menu-anchor {
+  position: relative;
+  display: inline-flex;
+}
+.menu {
+  position: absolute;
+  top: calc(100% + 2px);
+  right: 0;
+  z-index: 50;
+  width: 330px;
+  padding: 4px;
+  background: var(--raised);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  /* Taller than the room it has (set per menu as it opens): it scrolls. */
+  overflow-y: auto;
+}
+/* Items keep their height; the menu scrolls instead. */
+.menu > * {
+  flex-shrink: 0;
+}
+/* Opened upward: too little room below the button. */
+.menu.up {
+  top: auto;
+  bottom: calc(100% + 2px);
+}
+.menu-item {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  width: 100%;
+  min-height: 0;
+  padding: 5px 9px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  border-radius: var(--radius);
+  color: var(--text);
+}
+.menu-item:hover:not(:disabled) {
+  background: var(--accent-soft);
+}
+.menu-item-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  width: 100%;
+}
+.menu-item:disabled {
+  opacity: 0.5;
+}
+.menu-hint {
+  font-size: 11px;
+  color: var(--text-faint);
+  font-weight: 400;
+}
+.menu-note {
+  margin-top: 3px;
+  padding: 6px 9px 3px;
+  border-top: 1px solid var(--line);
+  font-size: 11.5px;
+  line-height: 1.45;
+  color: var(--text-dim);
+}
+
+.menu-sep {
+  height: 1px;
+  margin: 3px 4px;
+  background: var(--line);
+}
+
+/*
+ * A hover note (app/tooltips.ts): small, under the pointer, the full name in the text colour and the
+ * tooltip under it. It never takes the pointer.
+ */
+.hover-note {
+  display: none;
+  position: fixed;
+  z-index: 2147483000;
+  max-width: 340px;
+  padding: 4px 7px;
+  background: var(--raised);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.4);
+  font: 11.5px / 1.4 var(--font);
+  color: var(--text-dim);
+  white-space: pre-line;
+  overflow-wrap: anywhere;
+  pointer-events: none;
+}
+.hover-note b {
+  display: block;
+  color: var(--text);
+  font-weight: 600;
+}
+.hover-note b + b {
+  margin-top: 1px;
+}
+
+/* ------------------------------- the menu bar ------------------------------ */
+
+.menubar {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex: none;
+}
+.menubar-anchor {
+  position: relative;
+  display: inline-flex;
+}
+.menubar-title {
+  min-height: 24px;
+  padding: 0 8px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-dim);
+  font-weight: 400;
+}
+.menubar-title:hover:not(:disabled),
+.menubar-title.open {
+  color: var(--text);
+  background: var(--hover);
+  border-color: transparent;
+}
+.menubar-menu {
+  left: 0;
+  right: auto;
+  width: 290px;
+  max-height: calc(100vh - 48px);
+}
+.menubar-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  min-height: 24px;
+  padding: 0 8px 0 4px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  border-radius: var(--radius);
+  color: var(--text);
+  font-weight: 400;
+}
+.menubar-item.active:not(:disabled),
+.menubar-item:hover:not(:disabled) {
+  background: var(--accent-soft);
+  border: none;
+}
+.menubar-item:disabled {
+  opacity: 0.45;
+}
+.menubar-check {
+  width: 16px;
+  flex: none;
+  text-align: center;
+  color: var(--gold);
+}
+.menubar-shortcut {
+  color: var(--text-faint);
+  font-size: 11.5px;
+}

@@ -1,0 +1,33 @@
+/* The Text page: entries, the editor and the related texts. */
+
+.text-edit {
+  width: 100%;
+  resize: vertical;
+  font: inherit;
+  line-height: 1.5;
+  padding: 8px 10px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  background: var(--field, var(--bg));
+  color: var(--text);
+}
+.text-entry {
+  align-items: flex-start;
+}
+.text-hit {
+  align-items: flex-start;
+}
+.related-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--bg);
+}
+.related-body {
+  white-space: pre-wrap;
+  font-size: 12px;
+  line-height: 1.45;
+}

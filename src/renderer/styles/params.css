@@ -1,0 +1,52 @@
+/* The Params page's Browse panel: the param list and the chosen param's rows side by side. */
+
+.panel-body:has(> .params-split) {
+  overflow: hidden;
+  padding: 0;
+}
+.params-split {
+  display: grid;
+  height: 100%;
+  min-height: 0;
+}
+.params-col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  min-height: 0;
+  padding: 8px;
+}
+.params-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+.param-group-head {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 4px 3px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+  cursor: pointer;
+  user-select: none;
+  position: sticky;
+  top: 0;
+  background: var(--panel);
+  z-index: 1;
+}
+.param-group-head:hover {
+  color: var(--text);
+}
+.param-item {
+  align-items: flex-start;
+}
+.param-note {
+  display: block;
+  font-size: 11px;
+  color: var(--text-faint);
+  white-space: normal;
+  line-height: 1.3;
+}

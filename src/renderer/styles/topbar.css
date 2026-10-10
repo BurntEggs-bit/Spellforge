@@ -1,0 +1,155 @@
+/* The top bar of an open project: Back and Forward, the page switch, the project, Save and its menus. */
+
+.topbar {
+  display: flex;
+  align-items: stretch;
+  gap: 8px;
+  height: 38px;
+  padding: 0 8px 0 12px;
+  border-bottom: 1px solid var(--line);
+  background: var(--panel);
+  min-width: 0;
+  position: relative;
+  z-index: 5;
+}
+.topbar > * {
+  align-self: center;
+}
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--serif);
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text);
+  flex: none;
+  padding-right: 4px;
+}
+.brand-mark {
+  width: 20px;
+  height: 20px;
+  flex: none;
+  color: var(--gold);
+}
+.brand small {
+  color: var(--text-faint);
+  font-weight: 400;
+}
+
+/* The pages: tabs across the bar, the open one underlined in gold. */
+.page-tabs {
+  display: flex;
+  align-self: stretch;
+  gap: 2px;
+  flex: none;
+}
+.page-tabs > button {
+  height: 100%;
+  min-height: 0;
+  padding: 0 11px;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-dim);
+  box-shadow: inset 0 -2px 0 transparent;
+}
+.page-tabs > button:hover:not(:disabled) {
+  color: var(--text);
+  background: var(--hover);
+  border: none;
+}
+.page-tabs > button.active {
+  color: var(--text);
+  box-shadow: inset 0 -2px 0 var(--gold);
+}
+.page-tabs > button.active .icon-svg {
+  color: var(--gold);
+}
+@media (max-width: 1000px) {
+  .page-tabs .seg-label {
+    display: none;
+  }
+}
+
+/* The open project: its name, and its folder when there's room. */
+.project-chip {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+  color: var(--text-dim);
+  max-width: 100%;
+}
+.project-name {
+  font-weight: 600;
+  color: var(--text);
+}
+.project-path {
+  color: var(--text-faint);
+  font-size: 11.5px;
+}
+@media (max-width: 1180px) {
+  .project-path {
+    display: none;
+  }
+}
+.unsaved {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--changed);
+  font-size: 12px;
+  white-space: nowrap;
+}
+.dirty-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--changed);
+  display: inline-block;
+}
+.topbar .actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  flex: none;
+}
+
+/* Back / Forward. */
+.nav-buttons {
+  display: flex;
+  gap: 1px;
+  flex: none;
+}
+
+/* The Layout button counts the popped-out windows. */
+.has-badge {
+  position: relative;
+}
+.count-badge {
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  min-width: 14px;
+  height: 14px;
+  padding: 0 3px;
+  border-radius: 7px;
+  background: var(--gold);
+  color: var(--accent-ink);
+  font-size: 10px;
+  font-weight: 700;
+  line-height: 14px;
+  text-align: center;
+}
+
+/* Reload in game (F5): its option row. */
+.reload-check {
+  cursor: pointer;
+}
+.reload-check .row {
+  gap: 8px;
+}
+.reload-menu .menu {
+  width: 360px;
+}

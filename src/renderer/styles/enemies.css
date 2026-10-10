@@ -1,0 +1,82 @@
+/* The Enemies page: the viewer bar, moves, and the skill and spell dialogs. */
+
+.enemy-viewer-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 10px;
+  border-bottom: 1px solid var(--line);
+  flex-wrap: wrap;
+  font-size: 12px;
+}
+.enemy-viewer-bar label.row {
+  gap: 5px;
+}
+.enemy-viewer-bar select {
+  padding: 2px 6px;
+}
+
+.enemy-move .badge,
+.enemy-event .badge {
+  font-size: 11px;
+}
+.enemy-event {
+  gap: 8px;
+}
+
+.enemy-pick {
+  padding: 6px 0;
+  border-top: 1px solid var(--line);
+}
+
+.modal.enemy-dialog {
+  width: min(760px, 94vw);
+}
+.enemy-dialog h3 {
+  margin: 4px 0 0;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-dim);
+}
+.form-grid {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 8px 12px;
+  align-items: center;
+}
+.form-grid > label {
+  color: var(--text-dim);
+  font-size: 13px;
+}
+.form-grid textarea {
+  resize: vertical;
+  font: inherit;
+}
+.enemy-options {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.enemy-options label.row {
+  gap: 8px;
+  align-items: center;
+}
+.enemy-list {
+  margin: 0;
+  padding-left: 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 13px;
+}
+/* Which of the character's bullets a bullet event fires, inline in the list. */
+.enemy-list select.enemy-bullet {
+  max-width: 280px;
+  font-weight: 600;
+}
+table.enemy-dummies td {
+  padding: 4px 8px;
+}
+table.enemy-dummies select {
+  width: 100%;
+}

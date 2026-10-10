@@ -1,0 +1,236 @@
+/* The docked panels (dockview), the pages that host them, and popped-out windows. */
+
+/* dockview's theme, from the app's own theme variables (so it follows Appearance). */
+
+.dockview-theme-spellforge {
+  --dv-paneview-active-outline-color: var(--gold);
+  --dv-tabs-and-actions-container-font-size: 12px;
+  --dv-tabs-and-actions-container-height: 28px;
+  --dv-drag-over-background-color: var(--accent-soft);
+  --dv-drag-over-border-color: var(--gold);
+  --dv-drag-over-border: 2px solid var(--gold-dim);
+  --dv-edge-dock-indicator-color: var(--gold);
+  --dv-tabs-container-scrollbar-color: var(--line-strong);
+  --dv-icon-hover-background-color: var(--hover);
+  --dv-floating-box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  --dv-floating-border: 1px solid var(--line);
+  --dv-overlay-z-index: 999;
+  --dv-tab-font-size: inherit;
+  --dv-border-radius: 0px;
+  --dv-tab-margin: 0;
+  --dv-sash-color: transparent;
+  --dv-active-sash-color: var(--gold-dim);
+  --dv-active-sash-transition-duration: 0.08s;
+  --dv-active-sash-transition-delay: 0.15s;
+  --dv-spacing-padding: 0px;
+  --dv-tab-border-radius: 0px;
+  --dv-sash-border-radius: 0px;
+  --dv-dropdown-border-radius: var(--radius);
+  --dv-tab-close-icon-size: inherit;
+  --dv-floating-group-border: none;
+  --dv-floating-group-dragging-opacity: 0.5;
+  --dv-floating-titlebar-height: 22px;
+  --dv-floating-titlebar-background-color: var(--panel-2);
+  --dv-floating-titlebar-border-bottom: 1px solid var(--line);
+
+  --dv-group-view-background-color: var(--panel);
+  --dv-tabs-and-actions-container-background-color: var(--bg);
+  --dv-activegroup-visiblepanel-tab-background-color: var(--panel);
+  --dv-activegroup-hiddenpanel-tab-background-color: transparent;
+  --dv-inactivegroup-visiblepanel-tab-background-color: var(--panel);
+  --dv-inactivegroup-hiddenpanel-tab-background-color: transparent;
+  --dv-tab-divider-color: var(--line);
+  --dv-activegroup-visiblepanel-tab-color: var(--text);
+  --dv-activegroup-hiddenpanel-tab-color: var(--text-faint);
+  --dv-inactivegroup-visiblepanel-tab-color: var(--text-dim);
+  --dv-inactivegroup-hiddenpanel-tab-color: var(--text-faint);
+  --dv-separator-border: var(--line);
+  --dv-paneview-header-border-color: var(--line);
+}
+
+.dock-area {
+  height: 100%;
+  min-height: 0;
+  min-width: 0;
+}
+.dock-host {
+  min-height: 0;
+  min-width: 0;
+  position: relative;
+}
+
+/* A panel fills its slot; its own head and body scroll inside it. */
+.dock-panel {
+  height: 100%;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  background: var(--panel);
+  overflow: hidden;
+}
+.dock-panel > .panel,
+.dock-panel > .anim-viewport {
+  flex: 1;
+  min-height: 0;
+}
+
+/* Tabs: the active tab of the focused group carries the accent. */
+.dockview-theme-spellforge .dv-tab {
+  padding: 0 11px;
+  font-weight: 500;
+}
+.dockview-theme-spellforge .dv-groupview.dv-active-group > .dv-tabs-and-actions-container .dv-tab.dv-active-tab {
+  box-shadow: inset 0 2px 0 var(--gold);
+}
+.dockview-theme-spellforge .dv-groupview > .dv-tabs-and-actions-container {
+  border-bottom: 1px solid var(--line);
+}
+.dockview-theme-spellforge .dv-sash {
+  transition: background-color var(--fast) var(--ease);
+}
+
+/* Group header buttons: maximize, pop out / put back. */
+.dock-actions {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  height: 100%;
+  padding: 0 4px;
+}
+.dock-actions button {
+  width: 22px;
+  height: 22px;
+  min-height: 0;
+  padding: 0;
+  color: var(--text-faint);
+}
+.dock-actions button:hover {
+  color: var(--text);
+}
+.dock-actions button.on {
+  color: var(--accent);
+}
+
+/* A pinned panel: a mark on its tab, a strip at its top. */
+.dock-tab {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+.dock-tab-pin {
+  display: flex;
+  margin: 0 8px 0 -4px;
+  color: var(--accent);
+}
+.pin-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 10px;
+  font-size: 12px;
+  color: var(--text-dim);
+  background: var(--accent-soft);
+  border-bottom: 1px solid var(--line);
+}
+.pin-banner .icon-svg {
+  color: var(--accent);
+  flex: none;
+}
+.pin-banner span {
+  flex: 1;
+  min-width: 0;
+}
+.pin-banner button {
+  padding: 2px 8px;
+  font-size: 12px;
+}
+
+/* Popped-out windows: the panel fills the window. */
+.dv-popout-window {
+  background: var(--bg);
+  color: var(--text);
+}
+
+/* ------------------------------- the pages -------------------------------- */
+
+/*
+ * The dock is a layer of its own: its sashes and panel layers (which carry z-indexes of their own) stay
+ * under the top bar, so the menus that drop from it are drawn over the panels and take the clicks.
+ */
+.pages {
+  position: relative;
+  min-height: 0;
+  min-width: 0;
+  isolation: isolate;
+}
+.pages > .dock-host {
+  position: absolute;
+  inset: 0;
+}
+
+/* Drop targets shown while a popped-out window is dragged over the app. */
+.dock-compass {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9999;
+  display: none;
+}
+.dock-compass-preview {
+  position: fixed;
+  background: var(--accent-soft);
+  border: 2px solid var(--gold);
+  border-radius: var(--radius);
+  transition:
+    left 80ms var(--ease),
+    top 80ms var(--ease),
+    width 80ms var(--ease),
+    height 80ms var(--ease);
+}
+.dock-compass-target {
+  position: fixed;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  background: var(--raised);
+  border: 1px solid var(--line-strong);
+  box-shadow: 0 6px 18px -4px rgba(0, 0, 0, 0.6);
+}
+.dock-compass-target::before {
+  content: '';
+  position: absolute;
+  inset: 7px;
+  border: 1.5px solid var(--text-dim);
+  border-radius: 3px;
+}
+.dock-compass-target::after {
+  content: '';
+  position: absolute;
+  background: var(--gold-dim);
+  border-radius: 2px;
+}
+.dock-compass-target.center::after {
+  inset: 10px;
+}
+.dock-compass-target.left::after {
+  inset: 10px 18px 10px 10px;
+}
+.dock-compass-target.right::after {
+  inset: 10px 10px 10px 18px;
+}
+.dock-compass-target.top::after {
+  inset: 10px 10px 18px 10px;
+}
+.dock-compass-target.bottom::after {
+  inset: 18px 10px 10px 10px;
+}
+.dock-compass-target.hot {
+  background: var(--gold);
+  border-color: var(--gold);
+}
+.dock-compass-target.hot::before {
+  border-color: var(--accent-ink);
+}
+.dock-compass-target.hot::after {
+  background: var(--accent-ink);
+}
