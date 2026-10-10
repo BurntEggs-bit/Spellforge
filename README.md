@@ -1,3 +1,13 @@
+# DISCLAIMER
+
+Due to the community feedback and request, I am publishing this tool in a non finished state. Yes this tool is vibe coded, 
+so do what you will with what you got here. Considering the responses I Have gotten even posting that I was working on this tool, I
+will no longer be updating this unless the community accepts it. This build of Spellforge has not been tested, and I am not confident
+in the state that it is in at the moment. All the tutorial videos are AI generated and placeholders, the plan was to remake them myself
+or have someone who was interested in showing the tool. As of right now, all future production of Spellforge is halted. If someone decides 
+too pick this up and build upon it, potentially without AI, I would be nothing but happy. Goodluck, and happy modding.
+
+
 # Spellforge
 
 A Windows desktop editor for Elden Ring mods: weapons, spells, skills, bullets, effects, animations, behaviour scripts
