@@ -92,6 +92,8 @@ many more. [CREDITS.md](CREDITS.md) names everyone and what Spellforge uses thei
 else's work says so in a `Credit:` line. The licences of everything the app ships with are in
 [THIRD_PARTY_NOTICES.txt](THIRD_PARTY_NOTICES.txt).
 
+Spellforge was written with Claude, Anthropic's AI model, which is a co-author of this repository.
+
 ELDEN RING © Bandai Namco Entertainment Inc. / © FromSoftware, Inc. Spellforge is an unofficial, fan-made tool, not
 affiliated with or endorsed by FromSoftware or Bandai Namco. It reads the player's own copy of the game; no game files
 ship with the app.

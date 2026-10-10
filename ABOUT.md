@@ -14,6 +14,8 @@ SoulsFormats, SoulsFormatsNEXT, Havok Format Library and SoulsAssetPipeline are 
 
 Spellforge stands on the work of the souls modding community and of open-source projects. The About page (Help > About Spellforge) and [CREDITS.md](CREDITS.md) name everyone whose work it uses or learned from, and what for; code that follows someone’s work names it in a `Credit:` line.
 
+Spellforge was written with Claude, Anthropic’s AI model, which is a co-author of its repository.
+
 ## The game
 
 ELDEN RING © Bandai Namco Entertainment Inc. / © FromSoftware, Inc. Spellforge is an unofficial, fan-made tool, not affiliated with or endorsed by FromSoftware or Bandai Namco. It reads the player’s own copy of the game; no game files ship with the app.

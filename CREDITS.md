@@ -56,4 +56,6 @@ _ELDEN RING © Bandai Namco Entertainment Inc. / © FromSoftware, Inc. Spellforg
 
 ## Built with
 
+Written with Claude, Anthropic’s AI model, a co-author of the repository.
+
 TypeScript, Vite, electron-vite, electron-builder, ESLint and Prettier (development only, not part of the app).

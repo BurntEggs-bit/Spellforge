@@ -36,6 +36,8 @@ const about: string[] = [
   '',
   'Spellforge stands on the work of the souls modding community and of open-source projects. The About page (Help > About Spellforge) and [CREDITS.md](CREDITS.md) name everyone whose work it uses or learned from, and what for; code that follows someone’s work names it in a `Credit:` line.',
   '',
+  'Spellforge was written with Claude, Anthropic’s AI model, which is a co-author of its repository.',
+  '',
   '## The game',
   '',
   GAME_NOTICE,
@@ -66,6 +68,8 @@ for (const [kind, title] of CREDIT_SECTIONS) {
 md.push(
   '',
   '## Built with',
+  '',
+  'Written with Claude, Anthropic’s AI model, a co-author of the repository.',
   '',
   'TypeScript, Vite, electron-vite, electron-builder, ESLint and Prettier (development only, not part of the app).',
   '',
