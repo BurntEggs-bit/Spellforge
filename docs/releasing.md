@@ -2,8 +2,7 @@
 
 ## Checklist
 
-1. **Version and changelog.** `npm version <x.y.z> --no-git-tag-version`, then move the Unreleased section of
-   [CHANGELOG.md](../CHANGELOG.md) under the new version, with the date.
+1. **Version.** `npm version <x.y.z> --no-git-tag-version`.
 2. **Checks.** `npm run typecheck`, `npm run lint` and `npm test` pass.
 3. **Notices.** `npm run credits`, so `CREDITS.md` and `THIRD_PARTY_NOTICES.txt` list every credit and every library
    inside the built app.

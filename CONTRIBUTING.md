@@ -41,7 +41,7 @@ TypeScript projects enforce it.
   writing another.
 - **Comments say what the code does and why, as it is now.** Every module starts with a doc comment saying what it is
   for; exported functions and types say what they promise. History, dates, test stories and commented-out code don't
-  belong in code: they go in commit messages, the changelog or the format notes.
+  belong in code: they go in commit messages or the format notes.
 - **Errors** are `Error`s whose message tells a modder what's wrong and, when it can, what fixes it.
   `errorMessage()` (`src/shared/errors.ts`) turns anything caught into text.
 - **The UI is an editor, not a tutorial.** A field lives in the field list with the others; a selected thing's actions
@@ -84,7 +84,6 @@ someone's work is credited where it happens.
 1. `npm run typecheck`, `npm run lint` and `npm test` pass.
 2. A visible change has been looked at in the built app, and what it writes into a mod tried on a throwaway project.
 3. `npm run dist` builds.
-4. `CHANGELOG.md`'s Unreleased section says what a user would notice.
 
 Commits are small and do one thing. The message starts with a short summary in the imperative ("Fit held effects to
 the hand"), then says why, when that isn't obvious.

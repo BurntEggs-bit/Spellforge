@@ -82,7 +82,6 @@ Two things release builds include that this repository leaves out:
 | [HavokScript notes](docs/reference/havokscript-notes.md)       | The behaviour script format and compiler                             |
 | [Modding cheat sheet](docs/reference/modding-cheatsheet.md)    | IDs, animation numbering, TAE events, dummy polys                    |
 | [About](ABOUT.md)                                              | What Spellforge is, its licence and the notices it carries           |
-| [Changelog](CHANGELOG.md)                                      | What changed in each version                                          |
 
 ## Credits
 
